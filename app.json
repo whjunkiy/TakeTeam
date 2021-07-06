@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "TakeTeam",
+    "slug": "taketeam",
+    "version": "1.4.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon4.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "taketeam.net",
+      "buildNumber": "1.4.0",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "This app uses the images from gallery to make posts with users pictures."
+      }
+    },
+    "android": {
+      "package": "taketeam.net",
+      "versionCode": 26,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "build": {
+        "babel": {
+          "include": ["@codler/react-native-keyboard-aware-scroll-view"]
+        }
+      }
+    }
+  }
+}
