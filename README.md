@@ -1,3 +1,3 @@
 # TakeTeam
-npm install \r\n
+npm install <br/>
 expo start --ios
