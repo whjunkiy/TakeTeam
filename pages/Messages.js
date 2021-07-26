@@ -415,13 +415,13 @@ export default class Messages extends React.Component {
             if (fs < 12) fs = 12;
             if (fs2 < 12) fs2 = 12;
             let tt = -20;
-            let osh = h1-60;
+            let osh = height-260;
             let inpw = '80%';
             let spsp = 35;
             if (Platform.OS === 'ios') {
                 tt = 0;
                 spsp = 5;
-                osh = height - 350;
+                osh = height - 260;
                 w1 = width - 20;
                 inpw = '70%';
             }
@@ -431,159 +431,152 @@ export default class Messages extends React.Component {
                     <View>
                         <StatusBarBG style={{backgroundColor: "transparent"}} />
                     </View>
-                    <View>
-                        <StatusBarBG style={{backgroundColor: "transparent"}} />
-                    </View>
-                    <SafeAreaView style={[styles.centeredView]}>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={true}
-                            style={{borderWidth: 0}}
-                        >
-                            <SafeAreaView ref={this.inpContRef} style={[styles.centeredView, {borderWidth: 0, width: width, position: 'relative', top: tt}]}>
-                                <SafeAreaView style={[styles.modalView, {width: w1, padding: spsp}]}>
-                                    <SafeAreaView style={{
-                                        width: w1,
-                                        marginTop: tt+10,
-                                        paddingLeft: 20,
-                                        flexDirection: 'row',
-                                        alignContent: 'center',
-                                        alignItems: 'center',
-                                        minHeight: avaS + 20,
-                                        justifyContent: 'flex-start'}}>
-                                        <TouchableOpacity onPress={()=>{
-                                            this.setState({modalVisible: false})
-                                            }}>
-                                            <Image source={larrow} style={{width: lrS, height: lrS}} />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>{
-                                            this.setState({modalVisible: false});
-                                            store.dispatch({type:"SETPROFILE", mail: this.state.mail, whom: 0});
-                                            this.navi.navigate('profile', {whom: 0, email: this.state.mail})
-                                        }}>
-                                            <Image source={this.state.ava} style={{marginLeft: 10, width: avaS, height: avaS, borderRadius: Math.ceil(avaS / 2)}} />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>{
-                                            this.setState({modalVisible: false});
-                                            store.dispatch({type:"SETPROFILE", mail: this.state.mail, whom: 0});
-                                            this.navi.navigate('profile', {whom: 0, email: this.state.mail})
-                                        }}>
-                                            <Text style={{marginLeft: 10, fontFamily: 'ProximaNova', fontSize: fs}}>{this.state.nick}</Text>
-                                        </TouchableOpacity>
-                                    </SafeAreaView>
-
-                                    <SafeAreaView style={{marginTop: 10, marginBottom: 5, width: '100%', height: 1, backgroundColor: '#b9b9b9'}}></SafeAreaView>
-
-                                    <SafeAreaView  style={{maxHeight: osh, width: w1}}>
-                                        <ScrollView ref={ref=>{this.viewref = ref}}>
-                                        {this.state.msgs.map((t,i)=>{
-                                            let date = new Date(t.tm*1000);
-                                            let hours = date.getHours();
-                                            if (hours < 10) hours = '0' + hours
-                                            let minutes = date.getMinutes();
-                                            if (minutes < 10) minutes = '0' + minutes
-                                            let seconds = date.getSeconds();
-                                            if (seconds < 10) seconds = '0' + seconds
-                                            let year = date.getFullYear();
-                                            let month = date.getMonth() + 1;
-                                            if (month < 10) month = '0' + month
-                                            let day = date.getDate();
-                                            if (day < 10) day = '0' + day
-                                            let datka = day + '.' + month + '.' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-                                            let ava = this.state.ava;
-                                            let als = 'flex-end', bckclr = '#df4dd3', fc = '#FFF';
-                                            if (t.frm === this.nCstate.login.email) {
-                                                if (this.nCstate.login.info.hasOwnProperty('ava')) {
-                                                    ava = {uri: 'https://taketeam.net/avas/' + this.nCstate.login.info.ava};
-                                                } else ava = bigava;
-                                            } else {
-                                                als = 'flex-start';
-                                                bckclr = '#fafafa';
-                                                fc = '#000'
-                                            }
-                                            let textFlag = 1;
-                                            let rega = /\|\*\]evt:(.+)/i;
-                                            let res = t.txt.match(rega);
-                                            let eid = 0;
-                                            if (res) {
-                                                textFlag = 0;
-                                                eid = res[1].substr(0,res[1].length - 3);
-                                                if (!this.inMSG(this.state.mail, eid)) {
-                                                    this.getEvt(eid);
-                                                } else {
-                                                    //console.log("RENDER got");
-                                                }
-                                            }
-                                            let mail = this.nCstate.login.email;
-                                            let whwhw = 1;
-                                            if (t.frm !== this.nCstate.login.email) {
-                                                whwhw = 0;
-                                                mail = t.frm;
-                                            }
-                                            return(
-                                                <SafeAreaView key={i} style={{width: w1, flexDirection: 'row', marginLeft: 20, marginTop: 5, alignSelf: als, marginRight: 20}}>
-                                                    <TouchableOpacity style={{minWidth: 50}} onPress={()=>{
-                                                        store.dispatch({type:"SETPROFILE", mail: mail, whom: whwhw});
-                                                        this.navi.navigate('profile', {whom: whwhw, email: mail})}
-                                                    }>
-                                                        <Image source={ava} style={{width: 50, height: 50, borderRadius: 25, resizeMode: 'cover'}}/>
-                                                    </TouchableOpacity>
-                                                    <SafeAreaView style={{
-                                                        flexDirection: 'column',
-                                                        marginLeft: 5,
-                                                        backgroundColor: bckclr,
-                                                        borderRadius: 10,
-                                                        paddingLeft: 10,
-                                                        paddingRight: 10,
-                                                        paddingTop: 5,
-                                                        paddingBottom: 5
-                                                    }}>
-                                                        <Text style={{fontFamily: 'Tahoma', fontSize: 16, color: fc}}>{datka}</Text>
-                                                        {textFlag ?
-                                                            <Text style={{fontFamily: 'Tahoma', fontSize: 16, color: fc}}>{t.txt}</Text>
-                                                        :
-                                                            this.getAAA(this.state.mail, eid)
-                                                        }
-                                                    </SafeAreaView>
-                                                </SafeAreaView>
-                                            )
-                                        })}
-                                        </ScrollView>
-                                    </SafeAreaView>
-                                    <SafeAreaView style={{flex: 1, display: 'flex', flexDirection: 'row', backgroundColor: 'white', width: w1,
-                                        alignItems: 'center', alignContent: 'center', marginBottom: 10, marginTop: 5, height: uh+20, minHeight: uh+20,
-                                        justifyContent: 'flex-start', paddingTop: 5}}>
-                                        <TextInput
-                                            multiline={true}
-                                            numberOfLines={2}
-                                            ref={ref=>{this.smsref = ref}}
-                                            placeholder="Сообщение..."
-                                            placeholderTextColor="#cecece"
-                                            onFocus={()=>{
-                                                this.inpContRef.current.setNativeProps({marginTop: -300});
-                                            }}
-                                            onEndEditing={()=>{
-                                                this.inpContRef.current.setNativeProps({marginTop: 0});
-                                            }}
-                                            onblur={()=>{
-                                                this.inpContRef.current.setNativeProps({marginTop: 0});
-                                            }}
-                                            style={{borderWidth: 1, borderStyle: 'solid', borderColor: '#939393', padding: 5,
-                                                width: inpw, height: uh, borderRadius:10, fontFamily: 'Tahoma',
-                                                marginLeft: 20, color: '#939393', fontSize: fs2, backgroundColor: '#f9f9f9'}}
-                                            onChangeText={(smsText) => this.setState({smsText})}
-                                            onSubmitEditing={() => {
-                                                this.sendMessage();
-                                            }}
-                                            value={this.state.smsText}/>
-                                        <TouchableOpacity onPress={() => this.sendMessage() } style={{marginLeft: 10}}>
-                                            <Image source={upa} style={{width: uw, height: uh}}/>
-                                        </TouchableOpacity>
-                                    </SafeAreaView>
-                                </SafeAreaView>
+                    <SafeAreaView ref={this.inpContRef} style={{width: width, height: height - 75, padding: 0, margin: 0}}>
+                        <SafeAreaView style={{width: width-2,
+                            height: height - 75, display: 'flex', flex: 1,
+                            justifyContent: 'flex-start', alignContent: 'flex-start',
+                            alignItems: 'flex-start', flexDirection: 'column', padding: 0, margin: 0, paddingLeft: 5
+                        }}>
+                            <SafeAreaView style={{
+                                width: w1,
+                                marginTop: 5,
+                                flexDirection: 'row',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                minHeight: avaS + 20,
+                                justifyContent: 'flex-start',
+                                marginLeft: 0, paddingLeft: 0, left: 0
+                            }}>
+                                <TouchableOpacity onPress={()=>{
+                                    this.setState({modalVisible: false})
+                                    }}>
+                                    <Image source={larrow} style={{width: lrS, height: lrS}} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{
+                                    this.setState({modalVisible: false});
+                                    store.dispatch({type:"SETPROFILE", mail: this.state.mail, whom: 0});
+                                    this.navi.navigate('profile', {whom: 0, email: this.state.mail})
+                                }}>
+                                    <Image source={this.state.ava} style={{marginLeft: 10, width: avaS, height: avaS, borderRadius: Math.ceil(avaS / 2)}} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{
+                                    this.setState({modalVisible: false});
+                                    store.dispatch({type:"SETPROFILE", mail: this.state.mail, whom: 0});
+                                    this.navi.navigate('profile', {whom: 0, email: this.state.mail})
+                                }}>
+                                    <Text style={{marginLeft: 10, fontFamily: 'ProximaNova', fontSize: fs}}>{this.state.nick}</Text>
+                                </TouchableOpacity>
                             </SafeAreaView>
-                        </Modal>
+
+                            <SafeAreaView style={{marginTop: 5, marginBottom: 5, width: '100%', height: 1, backgroundColor: '#b9b9b9'}}></SafeAreaView>
+
+                            <SafeAreaView  style={{minHeight: osh, maxHeight: osh, width: width-14}}>
+                                <ScrollView ref={ref=>{this.viewref = ref}}>
+                                {this.state.msgs.map((t,i)=>{
+                                    let date = new Date(t.tm*1000);
+                                    let hours = date.getHours();
+                                    if (hours < 10) hours = '0' + hours
+                                    let minutes = date.getMinutes();
+                                    if (minutes < 10) minutes = '0' + minutes
+                                    let seconds = date.getSeconds();
+                                    if (seconds < 10) seconds = '0' + seconds
+                                    let year = date.getFullYear();
+                                    let month = date.getMonth() + 1;
+                                    if (month < 10) month = '0' + month
+                                    let day = date.getDate();
+                                    if (day < 10) day = '0' + day
+                                    let datka = day + '.' + month + '.' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+                                    let ava = this.state.ava;
+                                    let als = 'flex-end', bckclr = '#df4dd3', fc = '#FFF';
+                                    if (t.frm === this.nCstate.login.email) {
+                                        if (this.nCstate.login.info.hasOwnProperty('ava')) {
+                                            ava = {uri: 'https://taketeam.net/avas/' + this.nCstate.login.info.ava};
+                                        } else ava = bigava;
+                                    } else {
+                                        als = 'flex-start';
+                                        bckclr = '#fafafa';
+                                        fc = '#000'
+                                    }
+                                    let textFlag = 1;
+                                    let rega = /\|\*\]evt:(.+)/i;
+                                    let res = t.txt.match(rega);
+                                    let eid = 0;
+                                    if (res) {
+                                        textFlag = 0;
+                                        eid = res[1].substr(0,res[1].length - 3);
+                                        if (!this.inMSG(this.state.mail, eid)) {
+                                            this.getEvt(eid);
+                                        } else {
+                                            //console.log("RENDER got");
+                                        }
+                                    }
+                                    let mail = this.nCstate.login.email;
+                                    let whwhw = 1;
+                                    if (t.frm !== this.nCstate.login.email) {
+                                        whwhw = 0;
+                                        mail = t.frm;
+                                    }
+                                    return(
+                                        <SafeAreaView key={i} style={{maxWidth: '90%', flexDirection: 'row', marginLeft: 5, marginTop: 5, alignSelf: als, marginRight: 5}}>
+                                            <TouchableOpacity style={{minWidth: 50}} onPress={()=>{
+                                                store.dispatch({type:"SETPROFILE", mail: mail, whom: whwhw});
+                                                this.navi.navigate('profile', {whom: whwhw, email: mail})}
+                                            }>
+                                                <Image source={ava} style={{width: 50, height: 50, borderRadius: 25, resizeMode: 'cover'}}/>
+                                            </TouchableOpacity>
+                                            <SafeAreaView style={{
+                                                flexDirection: 'column',
+                                                marginLeft: 5,
+                                                backgroundColor: bckclr,
+                                                borderRadius: 10,
+                                                paddingLeft: 10,
+                                                paddingRight: 10,
+                                                paddingTop: 5,
+                                                paddingBottom: 5
+                                            }}>
+                                                <Text style={{fontFamily: 'Tahoma', fontSize: 16, color: fc}}>{datka}</Text>
+                                                {textFlag ?
+                                                    <Text style={{fontFamily: 'Tahoma', fontSize: 16, color: fc}}>{t.txt}</Text>
+                                                :
+                                                    this.getAAA(this.state.mail, eid)
+                                                }
+                                            </SafeAreaView>
+                                        </SafeAreaView>
+                                    )
+                                })}
+                                </ScrollView>
+                            </SafeAreaView>
+                            <SafeAreaView style={{flex: 1, display: 'flex', flexDirection: 'row', backgroundColor: 'white', width: w1, marginLeft: - 10,
+                                alignItems: 'center', alignContent: 'center', marginBottom: 10, marginTop: 5, height: uh+20, minHeight: uh+20,
+                                justifyContent: 'flex-start', paddingTop: 5}}>
+                                <TextInput
+                                    multiline={true}
+                                    numberOfLines={2}
+                                    ref={ref=>{this.smsref = ref}}
+                                    placeholder="Сообщение..."
+                                    placeholderTextColor="#cecece"
+                                    onFocus={()=>{
+                                        this.inpContRef.current.setNativeProps({marginTop: -300});
+                                    }}
+                                    onEndEditing={()=>{
+                                        this.inpContRef.current.setNativeProps({marginTop: 0});
+                                    }}
+                                    onblur={()=>{
+                                        this.inpContRef.current.setNativeProps({marginTop: 0});
+                                    }}
+                                    style={{borderWidth: 1, borderStyle: 'solid', borderColor: '#939393', padding: 5,
+                                        width: inpw, height: uh, borderRadius:10, fontFamily: 'Tahoma',
+                                        marginLeft: 20, color: '#939393', fontSize: fs2, backgroundColor: '#f9f9f9'}}
+                                    onChangeText={(smsText) => this.setState({smsText})}
+                                    onSubmitEditing={() => {
+                                        this.sendMessage();
+                                    }}
+                                    value={this.state.smsText}/>
+                                <TouchableOpacity onPress={() => this.sendMessage() } style={{marginLeft: 10}}>
+                                    <Image source={upa} style={{width: uw, height: uh}}/>
+                                </TouchableOpacity>
+                            </SafeAreaView>
+                        </SafeAreaView>
                     </SafeAreaView>
                 </Container>
             )

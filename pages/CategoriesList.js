@@ -94,6 +94,7 @@ class CategoriesList extends React.Component {
         this.ps = prewa;
         this.ct = 0;
         this.ct2 = [];
+        this.showingpic = {};
         this.commentHeight = height-450;
         this.maxWidth = width;
         this.maxHeight = height;
@@ -123,6 +124,32 @@ class CategoriesList extends React.Component {
         this.getSizes = this.getSizes.bind(this);
         this.scrollim = this.scrollim.bind(this);
         this.sharing = this.sharing.bind(this);
+        this.switchPica = this.switchPica.bind(this);
+    }
+
+    switchPica(iid) {
+        let cnt = 0;
+        for (let i in this.refas[iid]) {
+            cnt ++;
+        }
+        if (cnt < 2) return;
+        let curpic = this.showingpic[iid];
+        let setpic = curpic + 1;
+        if (setpic >= cnt) setpic = 0;
+        for (let i in this.refas[iid]) {
+            let j = (i+1) * this.maxWidth;
+            this.refas[iid][i].current.setNativeProps({left: j});
+        }
+        this.refas[iid][setpic].current.setNativeProps({left: -1*(setpic)*this.maxWidth});
+        this.showingpic[iid] = setpic;
+        for (let i in this.plaharefs[iid]) {
+            if (this.plaharefs[iid][i].current) {
+                this.plaharefs[iid][i].current.setNativeProps({opacity: 0.5});
+            }
+        }
+        if (this.plaharefs[iid][setpic].current) {
+            this.plaharefs[iid][setpic].current.setNativeProps({opacity: 1});
+        }
     }
 
     sharing(item) {
@@ -488,8 +515,9 @@ class CategoriesList extends React.Component {
          */
     }
 
-    viewPic(post, picn) {
+    viewPic(iid, picn) {
         if (this._isMounted) {
+            /*
             this.picsetted = 0;
             const pw = this.getPicW(post) * picn;
             if (!this.refas[post]) {
@@ -509,6 +537,20 @@ class CategoriesList extends React.Component {
             }
             if (this.plaharefs[post][picn].current) {
                 this.plaharefs[post][picn].current.setNativeProps({opacity: 1});
+            }
+            */
+            for (let i in this.refas[iid]) {
+                this.refas[iid][i].current.setNativeProps({left: this.maxWidth * (i+1)});
+            }
+            this.refas[iid][picn].current.setNativeProps({left: -1*picn*this.maxWidth});
+            this.showingpic[iid] = picn;
+            for (let i in this.plaharefs[iid]) {
+                if (this.plaharefs[iid][i].current) {
+                    this.plaharefs[iid][i].current.setNativeProps({opacity: 0.5});
+                }
+            }
+            if (this.plaharefs[iid][picn].current) {
+                this.plaharefs[iid][picn].current.setNativeProps({opacity: 1});
             }
         }
     }
@@ -744,9 +786,11 @@ class CategoriesList extends React.Component {
             }
             /*if (!this.refas3) {this.refas3 = {}}
             if (!this.refas) {this.refas = []; this.i = 0;}*/
+
             if (!this.refas) {this.refas = {};}
             if (!this.refas.hasOwnProperty(iid)) this.refas[iid] = {};
-            if (!this.refas[iid].current) this.refas[iid] = React.createRef();
+            //if (!this.refas[iid].current) this.refas[iid] = React.createRef();
+            this.showingpic[iid] = 0;
             /*console.log("this.i = " + this.i);
             this.i++;
             let reffs = this.state.refas3;
@@ -767,23 +811,11 @@ class CategoriesList extends React.Component {
 
             return (
                 <SafeAreaView style={{width: this.maxWidth, height: this.maxHeight}}>
-                    <ScrollView
-                        ref={this.refas[iid]}
-                        pagingEnable
-                        horizontal
-                        scrollEventThrottle={16}
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={({nativeEvent})=>{
-                            this.changeImg(nativeEvent, iid);
+                    <TouchableOpacity
+                        onPress={()=>{
+                            this.switchPica(iid);
                         }}
-                        onScrollBeginDrag={({nativeEvent})=>{
-                            this.changeImg1(nativeEvent, iid);
-                        }}
-                        onScrollEndDrag={({nativeEvent})=>{
-                            this.changeImg2(nativeEvent, iid);
-                        }}
-                        style={{width: '100%', height: this.maxHeight}}
-                    >
+                        style={{width: this.maxWidth, maxWidth: this.maxWidth, height: this.maxHeight, maxHeight: this.maxHeight, flexDirection: "row"}}>
                         {item.pics.map((p, index) => {
                             let picw = this.maxWidth;
                             let pich = this.maxHeight;
@@ -805,9 +837,14 @@ class CategoriesList extends React.Component {
                                     txtclr = item.ndpClr[index];
                                 }
                             }
+                            this.refas[iid][index] = React.createRef();
+                            let dispa = index * this.maxWidth;
+                            //if (index) dispa = index * this.maxWidth;
+
                             return (
-                                <SafeAreaView key={index} style={{width: this.maxWidth, height: this.maxHeight,
-                                    backgroundColor: 'black', display: 'flex',
+                                <SafeAreaView key={index} ref={this.refas[iid][index]}
+                                              style={{width: this.maxWidth, height: this.maxHeight,
+                                    backgroundColor: 'black', display: "flex", position: "relative", left: dispa,
                                     flexFlow: 'row wrap', justifyContent: 'center', alignContent: 'center',
                                     alignItems: 'center'}}>
                                     {item.nadpisi[index] ?
@@ -829,7 +866,7 @@ class CategoriesList extends React.Component {
                             )
                             })
                         }
-                    </ScrollView>
+                    </TouchableOpacity>
                     {item.pics.length > 1 ?
                         <SafeAreaView style={[styles.plaha, {width: width - 10, flexWrap: 'nowrap', left: 4}]}>
                             {
@@ -845,7 +882,7 @@ class CategoriesList extends React.Component {
                                         <TouchableOpacity
                                             key={ppi}
                                             onPress={() => {
-                                                this.viewPic(String(item['_id']), ppi);
+                                                this.viewPic(iid, ppi);
                                             }}
                                             style={{
                                                 width: plw,

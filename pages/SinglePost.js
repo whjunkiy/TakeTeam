@@ -49,7 +49,7 @@ export default class SinglePost extends React.Component {
         this.curSlide = 0;
         this.pw = '100%';
         this.picsetted = 1;
-        this.refas = React.createRef();
+        this.refas = {};
         this.ct2 = [];
         this.pid = this.navi.getParam('pid');
         this.state={
@@ -73,6 +73,7 @@ export default class SinglePost extends React.Component {
             joinersStatus: 0, joiners: [],
             requests: [], ap: [], jnrs: 0
         };
+        this.showingpic = 0;
         this.getImg = this.getImg.bind(this);
         this.goProfile = this.goProfile.bind(this);
         this.changeImg = this.changeImg.bind(this);
@@ -90,6 +91,31 @@ export default class SinglePost extends React.Component {
         this.viewJoiners = this.viewJoiners.bind(this);
         this.approv = this.approv.bind(this);
         this.sharing = this.sharing.bind(this);
+        this.switchPica = this.switchPica.bind(this);
+    }
+
+    switchPica() {
+        let cnt = 0;
+        for (let i in this.refas) {
+            cnt ++;
+        }
+        if (cnt < 2) return;
+        let curpic = this.showingpic;
+        let setpic = curpic + 1;
+        if (setpic >= cnt) setpic = 0;
+        for (let i in this.refas) {
+            this.refas[i].current.setNativeProps({left: (i+1) * this.maxWidth});
+        }
+        this.refas[setpic].current.setNativeProps({left: -1*(setpic)*this.maxWidth});
+        this.showingpic = setpic;
+        for (let i in this.plaharefs) {
+            if (this.plaharefs[i].current) {
+                this.plaharefs[i].current.setNativeProps({opacity: 0.5});
+            }
+        }
+        if (this.plaharefs[setpic].current) {
+            this.plaharefs[setpic].current.setNativeProps({opacity: 1});
+        }
     }
 
     sharing(item) {
@@ -196,7 +222,7 @@ export default class SinglePost extends React.Component {
 
     viewPic(picn) {
         if (this._isMounted) {
-            this.picsetted = 0;
+            /*this.picsetted = 0;
             const pw = width * picn;
             if (!this.refas) {
                 console.log("NO refas");
@@ -214,7 +240,22 @@ export default class SinglePost extends React.Component {
             }
             if (this.plaharefs[picn].current) {
                 this.plaharefs[picn].current.setNativeProps({opacity: 1});
+            }*/
+
+            for (let i in this.refas) {
+                this.refas[i].current.setNativeProps({left: this.maxWidth * (i+1)});
             }
+            this.refas[picn].current.setNativeProps({left: -1*picn*this.maxWidth});
+            this.showingpic = picn;
+            for (let i in this.plaharefs) {
+                if (this.plaharefs[i].current) {
+                    this.plaharefs[i].current.setNativeProps({opacity: 0.5});
+                }
+            }
+            if (this.plaharefs[picn].current) {
+                this.plaharefs[picn].current.setNativeProps({opacity: 1});
+            }
+
         }
     }
 
@@ -547,23 +588,11 @@ export default class SinglePost extends React.Component {
             }
             return (
                 <SafeAreaView style={{width: this.maxWidth, height: this.maxHeight}}>
-                    <ScrollView
-                        ref={myRef}
-                        pagingEnable
-                        horizontal
-                        scrollEventThrottle={16}
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={({nativeEvent})=>{
-                            this.changeImg(nativeEvent);
+                    <TouchableOpacity
+                        onPress={()=>{
+                            this.switchPica();
                         }}
-                        onScrollBeginDrag={({nativeEvent})=>{
-                            this.changeImg1(nativeEvent);
-                        }}
-                        onScrollEndDrag={({nativeEvent})=>{
-                            this.changeImg2(nativeEvent);
-                        }}
-                        style={{width: '100%', height: this.maxHeight}}
-                    >
+                        style={{width: this.maxWidth, maxWidth: this.maxWidth, height: this.maxHeight, maxHeight: this.maxHeight, flexDirection: "row"}}>
                         {item.pics.map((p, index) => {
                             let picw = this.maxWidth;
                             let pich = this.maxHeight;
@@ -586,9 +615,12 @@ export default class SinglePost extends React.Component {
                                     txtclr = item.ndpClr[index];
                                 }
                             }
+                            this.refas[index] = React.createRef();
+                            let dispa = index * this.maxWidth;
                             return (
-                                <SafeAreaView key={index} style={{width: this.maxWidth, height: this.maxHeight,
-                                    backgroundColor: 'black', display: 'flex',
+                                <SafeAreaView key={index} ref={this.refas[index]}
+                                              style={{width: this.maxWidth, height: this.maxHeight,
+                                    backgroundColor: 'black', display: "flex", position: "relative", left: dispa,
                                     flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center',
                                     alignItems: 'center'}}>
                                     {item.nadpisi[index] ?
@@ -616,7 +648,7 @@ export default class SinglePost extends React.Component {
                             )
                         })
                         }
-                    </ScrollView>
+                    </TouchableOpacity>
                     {item.pics.length > 1 ?
                         <SafeAreaView style={[styles.plaha, {width: width - 5}]}>
                             {
@@ -637,14 +669,14 @@ export default class SinglePost extends React.Component {
                                                 }
                                             }
                                             style={{
-                                                width: plw,
+                                                width: plw-2,
                                                 height: 5,
                                                 borderRadius: 5,
                                                 marginLeft: 2
                                             }}
                                         >
                                             <SafeAreaView ref={this.plaharefs[ppi]} style={{opacity: opa,
-                                                width: plw,
+                                                width: plw-2,
                                                 height: 5,
                                                 borderRadius: 5,
                                                 backgroundColor: '#FFF',}}></SafeAreaView>
