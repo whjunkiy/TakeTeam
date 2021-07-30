@@ -2,7 +2,7 @@
   "expo": {
     "name": "TakeTeam",
     "slug": "taketeam",
-    "version": "1.4.2",
+    "version": "1.4.4",
     "orientation": "portrait",
     "icon": "./assets/icon4.png",
     "splash": {
@@ -19,14 +19,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "taketeam.net",
-      "buildNumber": "1.4.2",
+      "buildNumber": "1.4.4",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app uses the images from gallery to make posts with users pictures."
       }
     },
     "android": {
       "package": "taketeam.net",
-      "versionCode": 28,
+      "versionCode": 30,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

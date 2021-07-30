@@ -699,8 +699,7 @@ export default class EditPost extends React.Component {
                 try {
                     let result = await ImagePicker.launchImageLibraryAsync({
                         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                        allowsEditing: true,
-                        aspect: [9, 16],
+                        allowsEditing: false,
                         quality: 1,
                         allowsMultipleSelection: true,
                         base64: true
