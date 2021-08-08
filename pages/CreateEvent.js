@@ -874,6 +874,9 @@ export default class CreateEvent extends React.Component {
             if (fs < 12) fs = 12;
             if (bh < 30) bh = 30;
             if (bw < 160) bw = 160;
+            bw = bw * 1.3;
+            bh = bh * 1.3;
+            fs = Math.ceil(fs*1.5);
             return (
                 <Container style={{fontFamily: 'Tahoma'}}>
                     <View>
@@ -941,16 +944,21 @@ export default class CreateEvent extends React.Component {
             this.msRef = React.createRef();
             if (kw < 22) kw = 22;
             if (kh < 22) kh = 22;
-            if (h1 < 40) h1 = 40;
+            if (h1 < 30) h1 = 30;
             if (FS1 < 15) FS1 = 15;
             let pptt = 2;
+            bh = 40;
+            let totalHeight = height - (h1+bh+70);
             if (Platform.OS === 'ios') {
                 pptt = 12;
                 h1 = 30;
                 mt = 5;
+                bh = 40;
+                totalHeight = height - (h1 + bh + 70 + Constants.statusBarHeight);
             }
+
             return (
-                <Container style={{fontFamily: 'Tahoma', flex: 1, display: 'flex', justifyContent: 'center', backgroundColor: 'black', paddingTop:2}}>
+                <Container style={{fontFamily: 'Tahoma', flex: 1, display: 'flex', justifyContent: 'center', backgroundColor: 'black', paddingTop:0}}>
                     <View>
                         <StatusBarBG style={{backgroundColor: "transparent"}} />
                     </View>
@@ -1005,139 +1013,128 @@ export default class CreateEvent extends React.Component {
                         :
                         null
                     }
-                    <ScrollView style={{marginTop: MT2}} ref={this.msRef} scrollEnabled={this.state.se}>
-                        <SafeAreaView style={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
-                            justifyContent: 'center', alignContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
-                            <SafeAreaView style={{height: MH, width: this.maxWidth, backgroundColor: 'black', display: 'flex',
-                                flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
-                            {this.state.pics.length ?
-                                <Image source={this.state.setted} style={{height: this.state.pich, width: this.state.picw, resizeMode: 'contain'}}/>
-                                :
-                                null
-                            }
-                                {this.state.cd === 'flex' ?
-                                    <SafeAreaView style={{
-                                        display: 'flex',
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        backgroundColor: '#000',
-                                        zIndex: 9999,
-                                        opacity: 1,
-                                        width: this.maxWidth,
-                                        minWidth: this.maxWidth,
-                                        height: this.maxHeight - 100,
-                                        maxHeight: this.maxHeight - 100}}>
-                                        <MyColrPicker setClr={this.setMyColor}/>
-                                    </SafeAreaView>
+                    <SafeAreaView style={{maxHeight: totalHeight}}>
+                        <ScrollView style={{marginTop: MT2}} ref={this.msRef} scrollEnabled={this.state.se}>
+                            <SafeAreaView style={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
+                                justifyContent: 'center', alignContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
+                                <SafeAreaView style={{height: MH, width: this.maxWidth, backgroundColor: 'black', display: 'flex',
+                                    flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
+                                {this.state.pics.length ?
+                                    <Image source={this.state.setted} style={{height: this.state.pich, width: this.state.picw, resizeMode: 'contain'}}/>
                                     :
                                     null
                                 }
-                                <SafeAreaView style={{
-                                    position: 'absolute',
-                                    height: this.maxHeight,
-                                    width: this.maxWidth,
-                                    zIndex: 1,
-                                    display: 'flex',
-                                    flexDirection: "row",
-                                    alignContent: "center",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    flexWrap: 'nowrap',
-                                    flex: 1,
-                                }}>
-                                    {
-                                        this.state.pics.map((el,i)=>{
-                                            this.nadp[i] = React.createRef();
-                                            if (this.state.inputD[i] === 'none') {
-                                                return (
-                                                    <Text key={i} ref={this.nadp[i]}></Text>
-                                                )
-                                            }
-                                            return (
-                                                <Input placeholder="" key={i} ref={this.nadp[i]}
-                                                   style={[styles.inp, {
-                                                       textAlign: 'center',
-                                                       maxWidth: this.state.inputW[i],
-                                                       display: this.state.inputD[i]
-                                                   }]}
-                                                   onSubmitEditing={()=>{this.nadpis()}}
-                                                   onChange={e => this.setnadpis(e.nativeEvent.text)}/>
-                                            )
-
-                                        })
-                                    }
-                                    {this.state.pics.map((el,i) => {
-                                        let dsp = 'none';
-                                        let lft2 = -9.5;
-                                        if (Platform.OS === 'ios') lft2 = 0;
-                                        if (i === this.state.ppi && this.state.inputD[i] === "none" && this.state.nadpisi[i]) dsp = 'flex';
-                                        if (dsp === 'none') {
-                                            return null;
-                                        } else return (
-                                                <SafeAreaView key={i} style={{paddingLeft: 10,
-                                                    height: 213, borderRadius: 5,
-                                                    display: dsp,
-                                                    position: pstn,
-                                                    left: lft,
-                                                    top: tp,
-                                                    width: 25, zIndex: 999,
-                                                    backgroundColor: '#939393'}}>
-                                                    <SafeAreaView style={{width: 5, height: 212.5, backgroundColor: 'white'}}>
-                                                    </SafeAreaView>
-                                                    <SafeAreaView style={{
-                                                        position: 'relative', left: lft2, top: -213,
-                                                        maxHeight: 216, height: 216, width: 25, overflow: 'hidden'}}>
-                                                    <Draggable
-                                                        x={0}
-                                                        y={200}
-                                                        minX={0}
-                                                        maxX={0}
-                                                        minY={0}
-                                                        maxY={213}
-                                                        onPressIn={()=>{this.setState({se: false});}}
-                                                        onDrag={(e,g)=>{this.setFS(e,g,i);}}
-                                                        onRelease={(e,w)=>{ this.MakeFS(e,w,i); this.setState({se: true}); }}
-                                                    >
-                                                        <SafeAreaView style={{width: 25, height: 15, backgroundColor: 'white', borderRadius: 5}}>
-                                                        </SafeAreaView>
-                                                    </Draggable>
-                                                    </SafeAreaView>
-                                                </SafeAreaView>
-                                        )
-                                    })}
-                                    {this.state.pics.map((el,i)=> {
-                                        let display = 'none';
-                                        let toS = 0;
-                                        if (this.state.inputD[i] === "none" && i === this.state.ppi) {
-                                            display = 'flex';
-                                            if (this.state.nadpisi) {
-                                                if (this.state.nadpisi[i] && this.state.nadpisi[i].length) toS = 1;
-                                            }
-                                        }
-                                        this.NR[i] = React.createRef();
-                                        let x = Math.ceil(this.maxWidth/3);
-                                        if (this.state.nadpisi[i]) {
-                                            x = Math.ceil(this.maxWidth/2) - this.state.nadpisi[i].length * 5;
-                                        }
-
-                                        let y = Math.ceil(this.maxHeight/2.5);
-                                        let styl = {
+                                    {this.state.cd === 'flex' ?
+                                        <SafeAreaView style={{
+                                            display: 'flex',
                                             position: 'absolute',
-                                            left: '26.4%',
                                             top: 0,
+                                            left: 0,
+                                            backgroundColor: '#000',
+                                            zIndex: 9999,
+                                            opacity: 1,
                                             width: this.maxWidth,
-                                            height: this.maxHeight,
-                                            overflow: 'hidden',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            alignContent: 'center',
-                                            display: display,
-                                        };
-                                        if (width < 900) {
-                                            styl = {
+                                            minWidth: this.maxWidth,
+                                            height: this.maxHeight - 100,
+                                            maxHeight: this.maxHeight - 100}}>
+                                            <MyColrPicker setClr={this.setMyColor}/>
+                                        </SafeAreaView>
+                                        :
+                                        null
+                                    }
+                                    <SafeAreaView style={{
+                                        position: 'absolute',
+                                        height: this.maxHeight,
+                                        width: this.maxWidth,
+                                        zIndex: 1,
+                                        display: 'flex',
+                                        flexDirection: "row",
+                                        alignContent: "center",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        flexWrap: 'nowrap',
+                                        flex: 1,
+                                    }}>
+                                        {
+                                            this.state.pics.map((el,i)=>{
+                                                this.nadp[i] = React.createRef();
+                                                if (this.state.inputD[i] === 'none') {
+                                                    return (
+                                                        <Text key={i} ref={this.nadp[i]}></Text>
+                                                    )
+                                                }
+                                                return (
+                                                    <Input placeholder="" key={i} ref={this.nadp[i]}
+                                                       style={[styles.inp, {
+                                                           textAlign: 'center',
+                                                           maxWidth: this.state.inputW[i],
+                                                           display: this.state.inputD[i]
+                                                       }]}
+                                                       onSubmitEditing={()=>{this.nadpis()}}
+                                                       onChange={e => this.setnadpis(e.nativeEvent.text)}/>
+                                                )
+
+                                            })
+                                        }
+                                        {this.state.pics.map((el,i) => {
+                                            let dsp = 'none';
+                                            let lft2 = -9.5;
+                                            let mll = 0;
+                                            if (Platform.OS === 'ios') { lft2 = 0; mll = 10;}
+                                            if (i === this.state.ppi && this.state.inputD[i] === "none" && this.state.nadpisi[i]) dsp = 'flex';
+                                            if (dsp === 'none') {
+                                                return null;
+                                            } else return (
+                                                    <SafeAreaView key={i} style={{paddingLeft: 10,
+                                                        height: 213, borderRadius: 5,
+                                                        display: dsp,
+                                                        position: pstn,
+                                                        left: lft,
+                                                        top: tp,
+                                                        width: 25, zIndex: 999,
+                                                        backgroundColor: '#939393'}}>
+                                                        <SafeAreaView style={{width: 5, height: 212.5, backgroundColor: 'white', marginLeft: mll}}>
+                                                        </SafeAreaView>
+                                                        <SafeAreaView style={{
+                                                            position: 'relative', left: lft2, top: -213,
+                                                            maxHeight: 216, height: 216, width: 25, overflow: 'hidden'}}>
+                                                        <Draggable
+                                                            x={0}
+                                                            y={200}
+                                                            minX={0}
+                                                            maxX={0}
+                                                            minY={0}
+                                                            maxY={213}
+                                                            onPressIn={()=>{this.setState({se: false});}}
+                                                            onDrag={(e,g)=>{this.setFS(e,g,i);}}
+                                                            onRelease={(e,w)=>{ this.MakeFS(e,w,i); this.setState({se: true}); }}
+                                                        >
+                                                            <SafeAreaView style={{width: 25, height: 15, backgroundColor: 'white', borderRadius: 5}}>
+                                                            </SafeAreaView>
+                                                        </Draggable>
+                                                        </SafeAreaView>
+                                                    </SafeAreaView>
+                                            )
+                                        })}
+                                        {this.state.pics.map((el,i)=> {
+                                            let display = 'none';
+                                            let toS = 0;
+                                            if (this.state.inputD[i] === "none" && i === this.state.ppi) {
+                                                display = 'flex';
+                                                if (this.state.nadpisi) {
+                                                    if (this.state.nadpisi[i] && this.state.nadpisi[i].length) toS = 1;
+                                                }
+                                            }
+                                            this.NR[i] = React.createRef();
+                                            let x = Math.ceil(this.maxWidth/3);
+                                            if (this.state.nadpisi[i]) {
+                                                x = Math.ceil(this.maxWidth/2) - this.state.nadpisi[i].length * 5;
+                                            }
+
+                                            let y = Math.ceil(this.maxHeight/2.5);
+                                            let styl = {
                                                 position: 'absolute',
-                                                left: 0,
+                                                left: '26.4%',
                                                 top: 0,
                                                 width: this.maxWidth,
                                                 height: this.maxHeight,
@@ -1147,60 +1144,74 @@ export default class CreateEvent extends React.Component {
                                                 alignContent: 'center',
                                                 display: display,
                                             };
-                                        }
-                                        return (
-                                            <SafeAreaView key={i} style={styl}>
-                                                {toS ?
-                                                    <SafeAreaView style={{position: 'absolute', top: tp + 350, left: lft, flexDirection: 'row'}}>
-                                                        <TouchableOpacity onPressOut={()=>{this.stopRota()}} onPressIn={()=>{this.rota('l', i)}}>
-                                                            <Text style={styles.arws}>&#x021B6;</Text>
-                                                        </TouchableOpacity>
-                                                        <TouchableOpacity style={{marginLeft: 5}} onPressOut={()=>{this.stopRota()}} onPressIn={()=>{this.rota('r', i)}}>
-                                                            <Text style={styles.arws}>&#x021B7;</Text>
-                                                        </TouchableOpacity>
-                                                    </SafeAreaView>
-                                                    : null
-                                                }
-                                                <Draggable
-                                                    x={x}
-                                                    y={y}
-                                                    minY={0}
-                                                    minX={0}
-                                                    maxX={this.maxWidth}
-                                                    maxY={this.maxHeight}
-                                                    onPressIn={()=>{this.setState({se: false});}}
-                                                    onRelease={(e,w)=>{ this.MakeChoords(e,w,i); this.setState({se: true});}}
-                                                >
-                                                    <Text
-                                                        ref={this.NR[i]}
-                                                        style={{
-                                                        fontSize: this.state.nadpFS[i],
-                                                        fontFamily: 'Tahoma', position: 'relative',
-                                                        fontWeight: 'bold', zIndex: 999,
-                                                        transform: [{"rotate": this.state.rotas[i]+"deg"}],
-                                                        color: this.state.ndpClr[i],
-                                                        backgroundColor: this.state.ndpBClr[i]
-                                                    }}>{this.state.nadpisi[i]}</Text>
-                                                </Draggable>
-                                            </SafeAreaView>
-                                        )
-                                    })}
+                                            if (width < 900) {
+                                                styl = {
+                                                    position: 'absolute',
+                                                    left: 0,
+                                                    top: 0,
+                                                    width: this.maxWidth,
+                                                    height: this.maxHeight,
+                                                    overflow: 'hidden',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    alignContent: 'center',
+                                                    display: display,
+                                                };
+                                            }
+                                            return (
+                                                <SafeAreaView key={i} style={styl}>
+                                                    {toS ?
+                                                        <SafeAreaView style={{position: 'absolute', top: tp + 350, left: lft, flexDirection: 'row'}}>
+                                                            <TouchableOpacity onPressOut={()=>{this.stopRota()}} onPressIn={()=>{this.rota('l', i)}}>
+                                                                <Text style={styles.arws}>&#x021B6;</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity style={{marginLeft: 5}} onPressOut={()=>{this.stopRota()}} onPressIn={()=>{this.rota('r', i)}}>
+                                                                <Text style={styles.arws}>&#x021B7;</Text>
+                                                            </TouchableOpacity>
+                                                        </SafeAreaView>
+                                                        : null
+                                                    }
+                                                    <Draggable
+                                                        x={x}
+                                                        y={y}
+                                                        minY={0}
+                                                        minX={0}
+                                                        maxX={this.maxWidth}
+                                                        maxY={this.maxHeight}
+                                                        onPressIn={()=>{this.setState({se: false});}}
+                                                        onRelease={(e,w)=>{ this.MakeChoords(e,w,i); this.setState({se: true});}}
+                                                    >
+                                                        <Text
+                                                            ref={this.NR[i]}
+                                                            style={{
+                                                            fontSize: this.state.nadpFS[i],
+                                                            fontFamily: 'Tahoma', position: 'relative',
+                                                            fontWeight: 'bold', zIndex: 999,
+                                                            transform: [{"rotate": this.state.rotas[i]+"deg"}],
+                                                            color: this.state.ndpClr[i],
+                                                            backgroundColor: this.state.ndpBClr[i]
+                                                        }}>{this.state.nadpisi[i]}</Text>
+                                                    </Draggable>
+                                                </SafeAreaView>
+                                            )
+                                        })}
+                                    </SafeAreaView>
                                 </SafeAreaView>
                             </SafeAreaView>
-                        </SafeAreaView>
-                    </ScrollView>
-                    <SafeAreaView style={[styles.bottom, {height: bh, maxHeight: bh}]}>
+                        </ScrollView>
+                    </SafeAreaView>
+                    <SafeAreaView style={[styles.bottom, {height: bh, maxHeight: bh, minHeight: bh}]}>
                         <TouchableOpacity onPress={()=>{this.nadpis()}}>
-                            <Image source={aa} style={{width: aaw, height: aah, resizeMode: 'cover', marginBottom: 6}}/>
+                            <Image source={aa} style={{width: aaw, height: aah, resizeMode: 'cover', marginTop: 5}}/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=>{this.showCircle()}}>
-                            <Image source={cirl} style={{width: cw, height: ch, resizeMode: 'cover', marginLeft: 30, marginBottom: 6}}/>
+                            <Image source={cirl} style={{width: cw, height: ch, resizeMode: 'cover', marginLeft: 30, marginTop: 5}}/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=>{this.showBackCircle()}}>
-                            <Image source={aaa} style={{width: aaaw, height: aaah, resizeMode: 'cover', marginLeft: 30, marginBottom: 6}}/>
+                            <Image source={aaa} style={{width: aaaw, height: aaah, resizeMode: 'cover', marginLeft: 30, marginTop: 5}}/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=>{this.addPic()}}>
-                            <Image source={dd} style={{width: ddw, height: ddw, resizeMode: 'cover', marginLeft: 30, marginBottom: 6}}/>
+                            <Image source={dd} style={{width: ddw, height: ddw, resizeMode: 'cover', marginLeft: 30, marginTop: 5}}/>
                         </TouchableOpacity>
                     </SafeAreaView>
                 </Container>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, Container} from 'native-base';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {  Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('screen');
 import treyg from '../assets/treyg.png';
@@ -61,6 +61,9 @@ export default function Header() {
     } else {
         c2 = '#cacaca';
         c1 = '#000';
+    }
+    if (Platform.OS === 'ios') {
+        fs += 2;
     }
 
     if (logined < 1 ) {

@@ -41,6 +41,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {USERINFO} from "../redux/types";
 import * as Permissions from 'expo-permissions';
 import StatusBarBG from "../components/StatusBarBG";
+import Constants from "expo-constants";
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -933,9 +934,11 @@ export default class Profile extends React.Component {
                 avaFS = Math.ceil(avaFS * this.coef);
                 FS = Math.ceil(FS * this.coef);
             }
+            let globalTop = 0;
             if (Platform.OS === 'ios') {
                 mh2 = this.maxHeight - 100;
                 mh += 25;
+                globalTop = 15;
             }
             if (avaFS < 12) avaFS = 12;
             if (avaS < 50) avaS = 50;
@@ -949,14 +952,14 @@ export default class Profile extends React.Component {
                         <StatusBarBG style={{backgroundColor: "transparent"}} />
                     </View>
                     <SafeAreaView style={{minHeight: 5}}></SafeAreaView>
-                    <SafeAreaView style={[styles.centeredView, {width: '100%'}]} >
+                    <SafeAreaView style={[styles.centeredView, {width: '100%', marginTop: globalTop}]} >
                         <Modal
                             animationType="slide"
                             transparent={true}
                             visible={true}
                             style={{borderWidth: 0}}
                         >
-                            <SafeAreaView style={[styles.centeredView, {width: width, height: mh2, maxHeight: mh2, borderColor: 'blue', borderWidth: 0}]}>
+                            <SafeAreaView style={[styles.centeredView, {width: width, height: mh2, maxHeight: mh2, borderColor: 'blue', borderWidth: 0, marginTop: globalTop}]}>
                                 <SafeAreaView ref={this.inpref} style={[styles.modalView,
                                     {borderColor: 'green', borderWidth: 0, padding: 0, margin: 1, width: width-12, height: mh2, maxHeight: mh2, position: 'absolute', top: -5}]}>
                                     <Header noShadow searchBar rounded style={{backgroundColor: 'none', width: width-12, position: 'relative',
@@ -1096,6 +1099,10 @@ export default class Profile extends React.Component {
                 picw = Math.ceil(picw * coef)
             }
             this.imgRef = React.createRef();
+            let mk = 0;
+            if (Platform.OS === 'ios') {
+                mk = 10;
+            }
             return (
                 <Container style={{fontFamily: 'Tahoma'}}>
                     <SafeAreaView style={[styles.centeredView]} >
@@ -1130,7 +1137,7 @@ export default class Profile extends React.Component {
                                             marginLeft: 0, marginTop: 10, color: 'grey', fontSize: fs}}
                                         onChangeText={(smsText) => this.setState({smsText})}
                                         value={this.state.smsText}/>
-                                    <SafeAreaView style={{flexDirection: 'row', padding: 20, justifyContent: 'space-between'}}>
+                                    <SafeAreaView style={{flexDirection: 'row', marginTop: mk, padding: 20, justifyContent: 'space-between'}}>
                                         <TouchableOpacity onPress={() => this.setState({modalVisible: false}) }>
                                             <SafeAreaView style={{borderRadius: 15, backgroundColor: "#b0b0b0", justifyContent: 'center', alignItems: 'center', alignContent: 'center', width: 40, height: 40}}>
                                                 <Text style={{color: 'white', fontFamily: 'ProximaNova', fontSize: 34, fontWeight: 'bold', transform: [{"rotate": '45deg'}]}}>+</Text>

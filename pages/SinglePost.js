@@ -4,10 +4,10 @@ import {Container, Input, Text} from "native-base";
 import {
     ActivityIndicator,
     Dimensions,
-    Modal,
+    Modal, Platform,
     SafeAreaView,
     StyleSheet,
-    TouchableHighlight
+    TouchableHighlight, View
 } from "react-native";
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {Image} from "react-native";
@@ -27,6 +27,8 @@ import krst from "../assets/x.png";
 import larr from "../assets/l_arrow.png";
 import approved from "../assets/approved.png";
 import ShareModal from "../components/ShareModal";
+import StatusBarBG from "../components/StatusBarBG";
+import Constants from "expo-constants";
 const { width, height } = Dimensions.get('screen');
 
 export default class SinglePost extends React.Component {
@@ -697,7 +699,7 @@ export default class SinglePost extends React.Component {
                         alignItems: "center",
                         justifyContent: "center",
                         position: 'absolute',
-                        bottom: 70,
+                        bottom: 20,
                         height: 100
                     }}>
                         <Text style={{color: '#ffc03a', fontWeight: 'bold', fontSize: fs, fontFamily: 'ProximaNova'}} ref={this.jr}>+{this.state.jnrs}</Text>
@@ -1028,15 +1030,23 @@ export default class SinglePost extends React.Component {
                 ll = 10;
                 maxwT =  width / 900 * 700;
             }
+            let mmttt = 1, maxMHeight = height - 140;
+            if (Platform.OS === 'ios') {
+                mmttt = 2;
+                maxMHeight -= Constants.statusBarHeight;
+            }
             return (
                 <Container style={{fontFamily: 'Tahoma'}}>
-
+                    <View>
+                        <StatusBarBG style={{backgroundColor: "transparent"}} />
+                    </View>
                     <CommentModal navigate={this.navi.navigate}/>
                     <ShareModal navigate={this.navi.navigate}/>
+                    <SafeAreaView style={{maxHeight: maxMHeight}}>
                     <ScrollView style={{opacity: this.state.opa, flexDirection: 'column'}}>
-                        <SafeAreaView style={[styles.header, {padding: 0, margin: 0, height: 40, maxHeight: 40, minHeight: 40}]}>
-                            <SafeAreaView style={{position: 'relative', top: 0, justifyContent: 'center', padding: 0, margin: 0,
-                                flexDirection: 'row', flexWrap: 'nowrap', alignItems: 'center', alignContent: 'center', height: 40, maxHeight: 40, minHeight: 40}}>
+                        <SafeAreaView style={[styles.header, {padding: 0, margin: 0, height: 30, maxHeight: 30, minHeight: 30}]}>
+                            <SafeAreaView style={{position: 'relative', top: 5, justifyContent: 'center', padding: 0, margin: 0,
+                                flexDirection: 'row', flexWrap: 'nowrap', alignItems: 'center', alignContent: 'center', height: 30, maxHeight: 30, minHeight: 30}}>
                                 <Image source={l_arrow} style={{width: 24, height: 24}}/>
                                 <Text style={{fontWeight: 'bold', fontSize: 26, fontFamily: 'ProximaNova'}}>{this.state.title}</Text>
                             </SafeAreaView>
@@ -1045,17 +1055,15 @@ export default class SinglePost extends React.Component {
                             width: '100%',
                             alignContent: "center",
                             flex: 1,
-                            marginTop: 40,
+                            marginTop: mmttt,
                             justifyContent: "center",
-                            alignItems: "center",
-                            maxHeight: this.maxHeight,
-                            height: this.maxHeight - 15
+                            alignItems: "center"
                         }}>
-                            <SafeAreaView style={[styles.postView, {height: this.maxHeight - 15, maxHeight: this.maxHeight, marginTop: 10}]}>
+                            <SafeAreaView style={[styles.postView, {height: this.maxHeight - 15, maxHeight: this.maxHeight, minHeight: this.maxHeight, marginTop: 10}]}>
                                 {this.getImg(this.state.pica, this.state.post, this.refas)}
                             </SafeAreaView>
                             <SafeAreaView style={{
-                                marginTop: mt,
+                                marginTop: mt+10,
                                 backgroundColor: 'white',
                                 width: this.maxWidth,
                                 maxWidth: this.maxWidth,
@@ -1130,7 +1138,9 @@ export default class SinglePost extends React.Component {
                                 </SafeAreaView>
                             </SafeAreaView>
                         </SafeAreaView>
+                        <SafeAreaView style={{minHeight: 10}}></SafeAreaView>
                     </ScrollView>
+                    </SafeAreaView>
                     <Bottom navigate={this.navi.navigate}/>
                 </Container>
             )

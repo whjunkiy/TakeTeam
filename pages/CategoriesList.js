@@ -3,9 +3,9 @@ import {List, ListItem, Text, Container, Input} from 'native-base';
 import {
     Dimensions,
     StyleSheet,
-    View,SafeAreaView,
+    View, SafeAreaView,
     ActivityIndicator,
-    RefreshControl, Modal, TextInput
+    RefreshControl, Modal, TextInput, Platform
 } from 'react-native';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import store from '../redux/store';
@@ -25,6 +25,7 @@ import {getCreatedEvents, getMyEvents, getNewEvents, goEvent, setMainView, addCo
 import ShareModal from "../components/ShareModal";
 import StatusBarBG from '../components/StatusBarBG';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Constants from "expo-constants";
 
 class CategoriesList extends React.Component {
     constructor(props) {
@@ -981,6 +982,17 @@ class CategoriesList extends React.Component {
                 }
                 if (HH < 30) HH = 30;
                 let mainHeight = height - (HH + mh + 75);
+                let mainScreenStyles = {
+                    width: '100%',
+                    marginTop: 0,
+                    alignContent: "flex-start",
+                    flex: 1, flexWrap: 'wrap',
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    flexDirection: "column"};
+                if (Platform.OS === 'ios') {
+                    mainScreenStyles['minHeight'] = height - (100 + Constants.statusBarHeight + 10);
+                }
                 return (
                     <Container>
                         <View>
@@ -994,173 +1006,167 @@ class CategoriesList extends React.Component {
                             <Header/>
                             <CommentModal navigate={this.navi.navigate}/>
                             <ShareModal navigate={this.navi.navigate}/>
-                        <SafeAreaView style={{
-                            width: '100%', marginTop: 0,
-                            alignContent: "flex-start",
-                            flex: 1, flexWrap: 'wrap',
-                            justifyContent: "flex-start",
-                            alignItems: "flex-start",
-                            flexDirection: "column"}}>
-                        <ScrollView style={{width: '100%'}}>
-                            <List style={{opacity: this.state.opa}}>
-                                {this.state.events.length ?
-                                    this.state.events.map((item, iii) => {
+                            <SafeAreaView style={mainScreenStyles}>
+                                <ScrollView style={{width: '100%'}}>
+                                <List style={{opacity: this.state.opa}}>
+                                    {this.state.events.length ?
+                                        this.state.events.map((item, iii) => {
 
-                                        let pica = prewa;
-                                        if (this._isMounted) {
-                                            pica = this.state.pp[item['_id']]['pics'][this.state.pp[item['_id']]['curpic']];
-                                        }
-                                        let avka = ava;
-                                        if (item.uinfo.hasOwnProperty('ava')) {
-                                            avka = {uri: 'https://taketeam.net/avas/' + item.uinfo.ava}
-                                        }
-                                        let pw = 70, ph = 70, fs = 20, ml = 50, fs2 = 18, ml2 = 25, mt = -5, ll = 30, myMT = 5;
-                                        let omamartop = 5, fss2 = 20;
-                                        let maxwT = 750, mHm = this.ph;
-                                        if (width < 900) {
-                                            let dl = 1;
-                                            pw = Math.ceil(pw/dl);
-                                            ph = Math.ceil(ph/dl);
-                                            ml = 10;
-                                            fs = 14;
-                                            fs2 = 16;
-                                            fss2 = 14;
-                                            myMT = 2;
-                                            ml2 = 30;
-                                            mHm = this.ph + 150;
-                                            mt = -5;
-                                            ll = 10;
-                                            maxwT =  width / 900 * 700;
-                                        }
-                                        let fpt;
-                                        if (iii === 0) fpt = 2;
-                                        else fpt = 15;
-                                        //this.refas[item['_id']] = React.createRef();
-                                        return (
-                                            <ListItem
-                                                key={iii}
-                                                style={{
-                                                    borderWidth: 0,
-                                                    paddingTop: fpt,
-                                                    minHeight: this.maxHeight + 80
-                                                }}>
-                                                <SafeAreaView style={{
-                                                    width: '100%',
-                                                    alignContent: "center",
-                                                    flex: 1,
-                                                    marginTop: 0,
-                                                    justifyContent: "center",
-                                                    alignItems: "center"
-
-                                                }}>
-                                                    <SafeAreaView style={[styles.postView, {height: this.maxHeight}]}>
-                                                        {this.getImg(pica, item)}
-                                                    </SafeAreaView>
-                                                    <SafeAreaView style={{
-                                                        marginTop: mt,
-                                                        backgroundColor: 'white',
-                                                        width: this.maxWidth,
-                                                        maxWidth: this.maxWidth,
-                                                        display: "flex",
-                                                        flexDirection: "row",
-                                                        flexWrap: "wrap",
-                                                        alignContent: "flex-start",
-                                                        alignItems: "flex-start",
-                                                        justifyContent: "flex-start"
+                                            let pica = prewa;
+                                            if (this._isMounted) {
+                                                pica = this.state.pp[item['_id']]['pics'][this.state.pp[item['_id']]['curpic']];
+                                            }
+                                            let avka = ava;
+                                            if (item.uinfo.hasOwnProperty('ava')) {
+                                                avka = {uri: 'https://taketeam.net/avas/' + item.uinfo.ava}
+                                            }
+                                            let pw = 70, ph = 70, fs = 20, ml = 50, fs2 = 18, ml2 = 25, mt = -5, ll = 30, myMT = 5;
+                                            let omamartop = 5, fss2 = 20;
+                                            let maxwT = 750, mHm = this.ph;
+                                            if (width < 900) {
+                                                let dl = 1;
+                                                pw = Math.ceil(pw/dl);
+                                                ph = Math.ceil(ph/dl);
+                                                ml = 10;
+                                                fs = 14;
+                                                fs2 = 16;
+                                                fss2 = 14;
+                                                myMT = 2;
+                                                ml2 = 30;
+                                                mHm = this.ph + 150;
+                                                mt = -5;
+                                                ll = 10;
+                                                maxwT =  width / 900 * 700;
+                                            }
+                                            let fpt;
+                                            if (iii === 0) fpt = 2;
+                                            else fpt = 15;
+                                            //this.refas[item['_id']] = React.createRef();
+                                            return (
+                                                <ListItem
+                                                    key={iii}
+                                                    style={{
+                                                        borderWidth: 0,
+                                                        paddingTop: fpt,
+                                                        minHeight: this.maxHeight + 80
                                                     }}>
-                                                        <TouchableOpacity onPress={() => {
-                                                            this.goProfile(item)
-                                                        }}>
-                                                            <SafeAreaView style={{maxWidth: pw+14,
-                                                                marginLeft: 5,
-                                                                position: 'relative',
-                                                                left: 5, overflow: 'hidden',
-                                                                marginTop: myMT,
-                                                                width: pw+12,
-                                                                display: "flex",
-                                                                flexDirection: "column",
-                                                                flexWrap: "nowrap",
-                                                                alignContent: "center",
-                                                                alignItems: "center",
-                                                                justifyContent: "center"}}>
-                                                                <Image
-                                                                    source={avka}
-                                                                    style={{
-                                                                        resizeMode: 'cover',
-                                                                        width: pw,
-                                                                        height: ph,
-                                                                        borderRadius: Math.ceil(pw /2)
-                                                                    }}/>
-                                                                <Text style={{
-                                                                    fontWeight: 'bold',
-                                                                    fontSize: fs,
-                                                                    flexWrap: 'nowrap',
-                                                                    alignItems: 'center',
-                                                                    alignContent: 'center',
-                                                                    justifyContent: 'center',
-                                                                    fontFamily: 'ProximaNova'
-                                                                }}>{item.uinfo.nick}</Text>
-                                                            </SafeAreaView>
-                                                        </TouchableOpacity>
+                                                    <SafeAreaView style={{
+                                                        width: '100%',
+                                                        alignContent: "center",
+                                                        flex: 1,
+                                                        marginTop: 0,
+                                                        justifyContent: "center",
+                                                        alignItems: "center"
+
+                                                    }}>
+                                                        <SafeAreaView style={[styles.postView, {height: this.maxHeight}]}>
+                                                            {this.getImg(pica, item)}
+                                                        </SafeAreaView>
                                                         <SafeAreaView style={{
-                                                            marginLeft: ml,
-                                                            marginTop: omamartop,
-                                                            justifyContent: 'flex-start',
-                                                            alignContent: 'flex-start',
-                                                            alignItems: 'flex-start',
-                                                            flex: 1,
-                                                            display: 'flex',
-                                                            flexDirection: 'column'
+                                                            marginTop: mt+10,
+                                                            backgroundColor: 'white',
+                                                            width: this.maxWidth,
+                                                            maxWidth: this.maxWidth,
+                                                            display: "flex",
+                                                            flexDirection: "row",
+                                                            flexWrap: "wrap",
+                                                            alignContent: "flex-start",
+                                                            alignItems: "flex-start",
+                                                            justifyContent: "flex-start"
                                                         }}>
-                                                            <Text style={{justifyContent: 'flex-start',
+                                                            <TouchableOpacity onPress={() => {
+                                                                this.goProfile(item)
+                                                            }}>
+                                                                <SafeAreaView style={{maxWidth: pw+14,
+                                                                    marginLeft: 5,
+                                                                    position: 'relative',
+                                                                    left: 5, overflow: 'hidden',
+                                                                    marginTop: myMT,
+                                                                    width: pw+12,
+                                                                    display: "flex",
+                                                                    flexDirection: "column",
+                                                                    flexWrap: "nowrap",
+                                                                    alignContent: "center",
+                                                                    alignItems: "center",
+                                                                    justifyContent: "center"}}>
+                                                                    <Image
+                                                                        source={avka}
+                                                                        style={{
+                                                                            resizeMode: 'cover',
+                                                                            width: pw,
+                                                                            height: ph,
+                                                                            borderRadius: Math.ceil(pw /2)
+                                                                        }}/>
+                                                                    <Text style={{
+                                                                        fontWeight: 'bold',
+                                                                        fontSize: fs,
+                                                                        flexWrap: 'nowrap',
+                                                                        alignItems: 'center',
+                                                                        alignContent: 'center',
+                                                                        justifyContent: 'center',
+                                                                        fontFamily: 'ProximaNova'
+                                                                    }}>{item.uinfo.nick}</Text>
+                                                                </SafeAreaView>
+                                                            </TouchableOpacity>
+                                                            <SafeAreaView style={{
+                                                                marginLeft: ml,
+                                                                marginTop: omamartop,
+                                                                justifyContent: 'flex-start',
                                                                 alignContent: 'flex-start',
                                                                 alignItems: 'flex-start',
-                                                                alignSelf: 'flex-start',
-                                                                fontSize: fs2, fontFamily: 'Tahoma',
-                                                                maxWidth: maxwT, overflow: 'hidden'}}>
-                                                                {item.opis}
-                                                            </Text>
-                                                            <SafeAreaView style={[styles.tagsC, {maxWidth: maxwT, alignContent: 'space-around'}]}>
-                                                                {item.tags.map((t, ii) => {
-                                                                    return (
-                                                                        <TouchableOpacity style={[styles.tagT, {marginTop: 2, marginBottom: 2}]} key={ii} onPress={()=>{
-                                                                            this.navi.navigate('search', {title: 'Поиск', tag: t});
-                                                                        }}>
-                                                                            <Text style={[styles.tag, {fontSize: fss2, fontFamily: 'ProximaNova'}]}>{t}</Text>
-                                                                        </TouchableOpacity>
-                                                                    )
-                                                                })}
+                                                                flex: 1,
+                                                                display: 'flex',
+                                                                flexDirection: 'column'
+                                                            }}>
+                                                                <Text style={{justifyContent: 'flex-start',
+                                                                    alignContent: 'flex-start',
+                                                                    alignItems: 'flex-start',
+                                                                    alignSelf: 'flex-start',
+                                                                    fontSize: fs2, fontFamily: 'Tahoma',
+                                                                    maxWidth: maxwT, overflow: 'hidden'}}>
+                                                                    {item.opis}
+                                                                </Text>
+                                                                <SafeAreaView style={[styles.tagsC, {maxWidth: maxwT, alignContent: 'space-around'}]}>
+                                                                    {item.tags.map((t, ii) => {
+                                                                        return (
+                                                                            <TouchableOpacity style={[styles.tagT, {marginTop: 2, marginBottom: 2}]} key={ii} onPress={()=>{
+                                                                                this.navi.navigate('search', {title: 'Поиск', tag: t});
+                                                                            }}>
+                                                                                <Text style={[styles.tag, {fontSize: fss2, fontFamily: 'ProximaNova'}]}>{t}</Text>
+                                                                            </TouchableOpacity>
+                                                                        )
+                                                                    })}
+                                                                </SafeAreaView>
                                                             </SafeAreaView>
                                                         </SafeAreaView>
                                                     </SafeAreaView>
-                                                </SafeAreaView>
-                                            </ListItem>
-                                        )
-                                    })
-                                    :
-                                        <SafeAreaView style={{
-                                            width: '100%', height: '100%', display: "flex", flex:1, minHeight: mHm,
-                                            flexDirection: "column",
-                                            alignContent: "center",
-                                            alignItems: "center",
-                                            justifyContent: "center"
-                                        }}>
-                                            <SafeAreaView style={{maxHeight: '50%', flexDirection: "column",
+                                                </ListItem>
+                                            )
+                                        })
+                                        :
+                                            <SafeAreaView style={{
+                                                width: '100%', height: '100%', display: "flex", flex:1, minHeight: mHm,
+                                                flexDirection: "column",
                                                 alignContent: "center",
-                                                alignItems: "center",  display: "flex", flex:1,
-                                                justifyContent: "center"}}>
-                                                <Text style={{fontWeight: 'bold', flex:1, display: 'flex', alignItems: 'center', alignContent: 'center', textAlign: 'center', justifyContent: 'center', fontFamily: 'Tahoma', textTransform: 'uppercase', color: '#afafaf', fontSize: 14, width: this.maxWidth-60}}>
-                                                    Подпишитесь на интресные аккаунты, чтобы не пропустить их афиши
-                                                </Text>
-                                                <Image source={lolgo} style={{width: 206, height: 270, marginTop: 30}}/>
+                                                alignItems: "center",
+                                                justifyContent: "center"
+                                            }}>
+                                                <SafeAreaView style={{maxHeight: '50%', flexDirection: "column",
+                                                    alignContent: "center",
+                                                    alignItems: "center",  display: "flex", flex:1,
+                                                    justifyContent: "center"}}>
+                                                    <Text style={{fontWeight: 'bold', flex:1, display: 'flex', alignItems: 'center', alignContent: 'center', textAlign: 'center', justifyContent: 'center', fontFamily: 'Tahoma', textTransform: 'uppercase', color: '#afafaf', fontSize: 14, width: this.maxWidth-60}}>
+                                                        Подпишитесь на интресные аккаунты, чтобы не пропустить их афиши
+                                                    </Text>
+                                                    <Image source={lolgo} style={{width: 206, height: 270, marginTop: 30}}/>
+                                                </SafeAreaView>
                                             </SafeAreaView>
-                                        </SafeAreaView>
-                                }
-                            </List>
-                        </ScrollView>
-                        </SafeAreaView>
+                                    }
+                                </List>
+                            </ScrollView>
+                            </SafeAreaView>
 
-                        <Bottom navigate={navigate}/>
+                            <Bottom navigate={navigate}/>
 
                         </SafeAreaView>
                     </Container>

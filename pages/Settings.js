@@ -10,7 +10,7 @@ import {
     Dimensions,
     ScrollView,
     SafeAreaView,
-    Modal, TextInput
+    Modal, TextInput, Platform
 } from 'react-native';
 import {View} from "react-native";
 import Bottom from "../components/Bottom";
@@ -21,6 +21,7 @@ import krst from "../assets/x.png";
 import bigava from "../assets/defava.png";
 import approved from '../assets/approved.png';
 import {SaveProfile3, saveProfile, saveProfile2, getCits, getMyReqs, approveSub, KMP} from "../redux/actions";
+import Constants from "expo-constants";
 const { width, height } = Dimensions.get('screen');
 
 export default class Settings extends React.Component {
@@ -829,6 +830,21 @@ export default class Settings extends React.Component {
             }
             if (picW < 120) picW = 120;
             if (picH < 30) picH = 30;
+            let styl = {
+                width: '100%',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                alignContent: 'flex-start',
+                flex: 1,
+                display: 'flex'
+            };
+            let kmt = 0;
+            if (Platform.OS === 'ios') {
+                styl['paddingLeft'] = 5;
+                styl['paddingRight'] = 5;
+                kmt = 1;
+            }
             return (
                 <Container>
                     <SafeAreaView style={{
@@ -859,15 +875,7 @@ export default class Settings extends React.Component {
                         flexDirection: 'row'
                     }}>
                         <ScrollView>
-                            <SafeAreaView style={{
-                                width: '100%',
-                                flexDirection: 'column',
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                                alignContent: 'flex-start',
-                                flex: 1,
-                                display: 'flex'
-                            }}>
+                            <SafeAreaView style={styl}>
                                 <SafeAreaView style={{
                                     maxWidth: this.maxWidth,
                                     width: this.maxWidth,
@@ -892,6 +900,7 @@ export default class Settings extends React.Component {
                                                     marginLeft: 1,
                                                     width: 25,
                                                     height: 25,
+                                                    marginTop: kmt,
                                                     backgroundColor: 'white',
                                                     borderRadius: 12
                                                 }}>
@@ -908,6 +917,7 @@ export default class Settings extends React.Component {
                                                 <SafeAreaView style={{
                                                     marginLeft: 23,
                                                     width: 25,
+                                                    marginTop: kmt,
                                                     height: 25,
                                                     backgroundColor: 'white',
                                                     borderRadius: 12

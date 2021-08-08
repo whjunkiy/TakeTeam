@@ -445,7 +445,7 @@ export default class Messages extends React.Component {
                                 alignItems: 'center',
                                 minHeight: avaS + 20,
                                 justifyContent: 'flex-start',
-                                marginLeft: 0, paddingLeft: 0, left: 0
+                                marginLeft: 10, paddingLeft: 0, left: 0
                             }}>
                                 <TouchableOpacity onPress={()=>{
                                     this.setState({modalVisible: false})
@@ -556,7 +556,7 @@ export default class Messages extends React.Component {
                                     placeholder="Сообщение..."
                                     placeholderTextColor="#cecece"
                                     onFocus={()=>{
-                                        this.inpContRef.current.setNativeProps({marginTop: -300});
+                                        this.inpContRef.current.setNativeProps({marginTop: -320});
                                     }}
                                     onEndEditing={()=>{
                                         this.inpContRef.current.setNativeProps({marginTop: 0});
@@ -628,7 +628,7 @@ export default class Messages extends React.Component {
                     <SafeAreaView style={[styles.start, {marginTop: SmarginTop, maxHeight: SmaxHeight}]}>
                         <SafeAreaView style={{flexDirection: "column", paddingLeft: 20, paddingRight: 20}}>
                             <SafeAreaView style={{
-                                flexDirection: "row", flexWrap: 'nowrap', width: this.maxWidth, marginLeft: 20,
+                                flexDirection: "row", flexWrap: 'nowrap', width: this.maxWidth, marginLeft: 25,
                                 maxWidth: this.maxWidth, alignContent: 'flex-start', alignItems: 'flex-start'
                             }}>
                                 <Image source={larrow} style={{width: fs, height: fs, marginTop: mt}}/>

@@ -31,6 +31,7 @@ import shagy from "../assets/shag.png";
 import MyColrPicker from "../components/MyColrPicker";
 import * as Permissions from 'expo-permissions';
 import StatusBarBG from "../components/StatusBarBG";
+import Constants from "expo-constants";
 
 export default class EditPost extends React.Component {
     constructor(props) {
@@ -996,6 +997,9 @@ export default class EditPost extends React.Component {
             if (fs < 12) fs = 12;
             if (bh < 30) bh = 30;
             if (bw < 160) bw = 160;
+            bw = bw * 1.3;
+            bh = bh * 1.3;
+            fs = Math.ceil(fs*1.5);
             return (
                 <Container style={{fontFamily: 'Tahoma'}}>
                     <View>
@@ -1077,10 +1081,14 @@ export default class EditPost extends React.Component {
             if (h1 < 40) h1 = 40;
             this.msRef = React.createRef();
             let pptt = 5;
+            bh = 40;
+            let totalHeight = height - (h1+bh+70);
             if (Platform.OS === 'ios') {
-                pptt = 15;
-                mt = 5;
+                pptt = 12;
                 h1 = 30;
+                mt = 5;
+                bh = 40;
+                totalHeight = height - (h1 + bh + 70 + Constants.statusBarHeight);
             }
             return (
                 <Container style={{fontFamily: 'Tahoma', flex: 1, display: 'flex', justifyContent: 'center', backgroundColor: 'white', paddingTop:2}}>
@@ -1091,7 +1099,7 @@ export default class EditPost extends React.Component {
                         alignContent: 'center', justifyContent: 'center', width: '100%', height: h1,
                         minHeight: h1, maxHeight: h1, backgroundColor: 'white', position: 'absolute', top: 0}}>
                         <SafeAreaView style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between',
-                            alignItems: 'center', alignContent: 'center', paddingTop: pptt, marginTop: 20, fontSize: 28,
+                            alignItems: 'center', alignContent: 'center', paddingTop: pptt, marginTop: 10, fontSize: 28,
                             height: h1, minHeight: h1, maxHeight: h1, maxWidth: 900, width: '100%', flex: 1,
                             backgroundColor: 'white'}}>
                             <TouchableOpacity onPress={()=>{this.cancel();}}>
@@ -1121,7 +1129,7 @@ export default class EditPost extends React.Component {
                     }}>
                         {this.plaha()}
                     </SafeAreaView>
-                    <SafeAreaView style={{height: MH-70, marginTop: 20}}>
+                    <SafeAreaView style={{maxHeight: totalHeight, marginTop: 20}}>
                     <ScrollView ref={this.msRef} scrollEnabled={this.state.se}>
                         <SafeAreaView style={{width: '100%', display: 'flex',
                             flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
@@ -1191,6 +1199,9 @@ export default class EditPost extends React.Component {
                                             y = 200 - (this.state.nadpFS[i] - 20) * 5;
                                             if (y === 10) y = 0;
                                         }
+                                        let lft2 = -9.5;
+                                        let mll = 0;
+                                        if (Platform.OS === 'ios') { lft2 = 0; mll = 10; }
                                         if (i === this.state.ppi && this.state.inputD[i] === "none" && this.state.nadpisi[i]) dsp = 'flex';
                                         if (dsp === 'none') {
                                             return null;
@@ -1203,10 +1214,10 @@ export default class EditPost extends React.Component {
                                                 top: tp,
                                                 width: 25, zIndex: 999,
                                                 backgroundColor: '#939393'}}>
-                                                <SafeAreaView style={{width: 5, height: 212.5, backgroundColor: 'white'}}>
+                                                <SafeAreaView style={{width: 5, height: 212.5, backgroundColor: 'white', marginLeft: mll}}>
                                                 </SafeAreaView>
                                                 <SafeAreaView style={{
-                                                    position: 'relative', left:0, top: -213,
+                                                    position: 'relative', left: lft2, top: -213,
                                                     maxHeight: 216, height: 216, width: 25, overflow: 'hidden'}}>
                                                     <Draggable
                                                         x={0}
@@ -1216,10 +1227,10 @@ export default class EditPost extends React.Component {
                                                         minY={0}
                                                         maxY={213}
                                                         onPressIn={()=>{this.setState({se: false});}}
-                                                        onDrag={(e,g)=>{this.setFS(e,g,i)}}
-                                                        onRelease={(e,w)=>{this.MakeFS(e,w,i); this.setState({se: true});}}
+                                                        onDrag={(e,g)=>{this.setFS(e,g,i);}}
+                                                        onRelease={(e,w)=>{ this.MakeFS(e,w,i); this.setState({se: true}); }}
                                                     >
-                                                        <SafeAreaView style={{width: 25, height: 15, backgroundColor: 'white', borderRadius: 5, position: 'relative', left: -5}}>
+                                                        <SafeAreaView style={{width: 25, height: 15, backgroundColor: 'white', borderRadius: 5}}>
                                                         </SafeAreaView>
                                                     </Draggable>
                                                 </SafeAreaView>

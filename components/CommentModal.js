@@ -173,7 +173,13 @@ export default function CommentModal({navigate}) {
         minComH = 500;
     }*/
     let minus = -300;
-    if (Platform.OS === 'ios') minus = -150;
+    let mt = 1;
+    if (Platform.OS === 'ios') {
+        minus = -150;
+        mt = 15;
+        FS += 2;
+        krstS += 2;
+    }
     return (
         <SafeAreaView style={[styles.centeredView, {
             display: modalDisplay,
@@ -195,7 +201,7 @@ export default function CommentModal({navigate}) {
                     <SafeAreaView style={[styles.modalView, {width: maxWidth - 10, minHeight: commentHeight}]}>
                         <SafeAreaView style={{flex: 1, display: 'flex',
                             flexWrap: 'nowrap',height: krstS+2, maxHeight: krstS+2, minHeight: krstS+2, justifyContent: 'center',
-                            flexDirection: 'row', alignContent: 'flex-start', alignItems: 'flex-start', marginTop: 1
+                            flexDirection: 'row', alignContent: 'flex-start', alignItems: 'flex-start', marginTop: mt
                         }}>
                             <Text style={{fontSize: FS, color: '#8c8c8c', textTransform: 'uppercase', fontWeight: 'bold', fontFamily: 'ProximaNova'}}>комментариев: {coms.length} </Text>
                             <TouchableOpacity onPress={()=>{
