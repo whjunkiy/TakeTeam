@@ -178,7 +178,7 @@ export default function CommentModal({navigate}) {
         minus = -150;
         mt = 15;
         FS += 2;
-        krstS += 2;
+        krstS += 4;
     }
     return (
         <SafeAreaView style={[styles.centeredView, {

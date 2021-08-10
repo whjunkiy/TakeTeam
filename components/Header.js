@@ -63,7 +63,7 @@ export default function Header() {
         c1 = '#000';
     }
     if (Platform.OS === 'ios') {
-        fs += 2;
+        fs += 4;
     }
 
     if (logined < 1 ) {

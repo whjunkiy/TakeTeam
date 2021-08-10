@@ -1030,7 +1030,7 @@ export default class SinglePost extends React.Component {
                 ll = 10;
                 maxwT =  width / 900 * 700;
             }
-            let mmttt = 1, maxMHeight = height - 140;
+            let mmttt = 1, maxMHeight = height - 70;
             if (Platform.OS === 'ios') {
                 mmttt = 2;
                 maxMHeight -= Constants.statusBarHeight;
